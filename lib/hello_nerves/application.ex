@@ -15,6 +15,8 @@ defmodule HelloNerves.Application do
         # Children for all targets
         # Starts a worker by calling: HelloNerves.Worker.start_link(arg)
         # {HelloNerves.Worker, arg},
+        LedOnOff,
+        Button
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)

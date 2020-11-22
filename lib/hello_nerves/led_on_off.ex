@@ -1,25 +1,48 @@
 defmodule LedOnOff do
+  use GenServer
+
   require Logger
 
   alias Circuits.GPIO
 
-  def on(pin) do
-    Logger.info("Writing 1 to pin #{pin}")
+  @me __MODULE__
+  @led_control_output_pin Application.get_env(:hello_nerves, :led_control_output_pin, 17)
 
-    {:ok, output_gpio} = GPIO.open(pin, :output)
-
-    GPIO.write(output_gpio, 1)
-
-    GPIO.close(output_gpio)
+  # CLIENT
+  def start_link(_) do
+    GenServer.start_link(@me, :noargs, name: @me)
   end
 
-  def off(pin) do
-    Logger.info("Writing 0 to pin #{pin}")
+  def toggle() do
+    GenServer.call(@me, :toggle)
+  end
 
-    {:ok, output_gpio} = GPIO.open(pin, :output)
+  # SERVER
+  @impl true
+  def init(_) do
+    {:ok, output_gpio} = GPIO.open(@led_control_output_pin, :output)
 
-    GPIO.write(output_gpio, 0)
+    {:ok, %{pin: output_gpio, ledOn: false}}
+  end
 
-    GPIO.close(output_gpio)
+  @impl true
+  def handle_call(:toggle, _from, state) do
+    if state.ledOn do
+      off(state.pin)
+    else
+      on(state.pin)
+    end
+
+    {:reply, %{}, %{pin: state.pin, ledOn: !state.ledOn}}
+  end
+
+  defp on(gpio) do
+    Logger.info("Writing 1 to gpio pin #{@led_control_output_pin}")
+    GPIO.write(gpio, 1)
+  end
+
+  defp off(gpio) do
+    Logger.info("Writing 0 to pin #{@led_control_output_pin}")
+    GPIO.write(gpio, 0)
   end
 end
