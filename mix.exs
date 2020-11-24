@@ -32,6 +32,10 @@ defmodule HelloNerves.MixProject do
     [
       # Dependencies for all targets
       {:circuits_gpio, "~> 0.4"},
+      {:circuits_i2c, "~> 0.1"},
+      {:oled, "~> 0.3.0"},
+      {:chisel, "~> 0.2.0"},
+
       {:nerves, "~> 1.7.0", runtime: false},
       {:shoehorn, "~> 0.7.0"},
       {:ring_logger, "~> 0.8.1"},

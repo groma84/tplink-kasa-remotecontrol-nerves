@@ -10,6 +10,14 @@ Application.start(:nerves_bootstrap)
 
 config :hello_nerves, target: Mix.target()
 
+config :hello_nerves, Display,
+  device: "i2c-1",
+  driver: :ssd1306,
+  type: :i2c,
+  width: 128,
+  height: 64,
+  address: 0x3C
+
 # Customize non-Elixir parts of the firmware. See
 # https://hexdocs.pm/nerves/advanced-configuration.html for details.
 
