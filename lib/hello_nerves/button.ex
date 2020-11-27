@@ -38,7 +38,7 @@ defmodule Button do
   def handle_info({:circuits_gpio, _pin, _timestamp, 1}, state) do
     Logger.info("Received 1 from button")
 
-    LedOnOff.toggle()
+    LedOnOff.toggle(:first)
 
     {:noreply, state}
   end
