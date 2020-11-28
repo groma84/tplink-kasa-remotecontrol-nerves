@@ -18,6 +18,14 @@ defmodule LedOnOff do
     GenServer.call(@me, {:toggle, led})
   end
 
+  def switch_on(led) do
+    GenServer.call(@me, {:on, led})
+  end
+
+  def switch_off(led) do
+    GenServer.call(@me, {:off, led})
+  end
+
   # SERVER
   @impl true
   def init(_) do
@@ -77,6 +85,44 @@ defmodule LedOnOff do
     end
 
     {:reply, %{}, %{state | led2On: !state.ledOn}}
+  end
+
+  def handle_call({:on, led}, _from, state) do
+    pin =
+      case led do
+         :first -> state.pin
+         :second -> state.pin2
+      end
+
+    state_val =
+      case led do
+        :first -> :ledOn
+        :second -> :led2On
+      end
+
+      on(pin)
+      writeLedOn(led)
+
+    {:reply, %{}, %{state | state_val => true }}
+  end
+
+  def handle_call({:off, led}, _from, state) do
+    pin =
+      case led do
+         :first -> state.pin
+         :second -> state.pin2
+      end
+
+    state_val =
+      case led do
+        :first -> :ledOn
+        :second -> :led2On
+      end
+
+      off(pin)
+      writeLedOff(led)
+
+    {:reply, %{}, %{state | state_val => false }}
   end
 
   defp on(gpio) do

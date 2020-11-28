@@ -17,8 +17,10 @@ defmodule HelloNerves.Application do
         # {HelloNerves.Worker, arg},
         Display,
         TextDisplay,
+        Spi,
         LedOnOff,
-        Button
+        Button,
+        Potentiometer
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)

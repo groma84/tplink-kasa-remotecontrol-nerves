@@ -28,7 +28,8 @@ defmodule TextDisplay do
   @impl true
   def init(_) do
     self() |> send(:load_font)
-    {:ok, %{first_line: "", second_line: "", third_line: "", font: nil}}
+    {:ok, %{first_line: "", second_line: "", third_line: "", font: nil,
+    prev_first_line: "", prev_second_line: "", prev_third_line: ""}}
   end
 
   @impl true
@@ -40,31 +41,43 @@ defmodule TextDisplay do
 
   @impl true
   def handle_cast( {:writeFirstLine, text}, state) do
-    new_state = %{ state | first_line: text }
-    write(state.font, text, state.second_line, state.third_line)
+    new_state = %{ state | prev_first_line: state.first_line, first_line: text }
+    write(new_state)
     {:noreply, new_state}
   end
 
   @impl true
   def handle_cast( {:writeSecondLine, text}, state) do
-    new_state = %{ state | second_line: text }
-    write(state.font, state.first_line, text, state.third_line)
+    new_state = %{ state | prev_second_line: state.second_line, second_line: text }
+    write(new_state)
     {:noreply, new_state}
   end
 
   @impl true
-  def handle_cast( {:writeSecondThirdLine, text}, state) do
-    new_state = %{ state | third_line: text }
-    write(state.font, state.first_line, state.second_line, text)
+  def handle_cast( {:writeThirdLine, text}, state) do
+    new_state = %{ state | prev_third_line: state.third_line, third_line: text }
+    write(new_state)
     {:noreply, new_state}
   end
 
-  defp write(font, first_line, second_line, third_line) do
-    Display.clear()
-    {_, _} = Chisel.Renderer.draw_text(first_line, 0, 0, font, &put_pixel/2)
-    {_, _} = Chisel.Renderer.draw_text(second_line, 0, 24, font, &put_pixel/2)
-    {_, _} = Chisel.Renderer.draw_text(third_line, 0, 48, font, &put_pixel/2)
-    Display.display()
+  defp write(%{font: font, first_line: first_line, second_line: second_line, third_line: third_line,
+  prev_first_line: prev_first_line, prev_second_line: prev_second_line, prev_third_line: prev_third_line}) do
+    font_config = [size_x: 1, size_y: 1]
+
+    first_line_changed = first_line != prev_first_line
+    second_line_changed = second_line != prev_second_line
+    third_line_changed = third_line != prev_third_line
+    text_changed = first_line_changed || second_line_changed || third_line_changed
+
+    if (text_changed) do
+      Display.clear()
+
+      {_, _} = Chisel.Renderer.draw_text(first_line, 0, 0, font, &put_pixel/2, font_config)
+      {_, _} = Chisel.Renderer.draw_text(second_line, 0, 16, font, &put_pixel/2, font_config)
+      {_, _} = Chisel.Renderer.draw_text(third_line, 0, 32, font, &put_pixel/2, font_config)
+
+      Display.display()
+    end
   end
 
   defp put_pixel(x, y) do
