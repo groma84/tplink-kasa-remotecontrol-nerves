@@ -20,7 +20,8 @@ defmodule HelloNerves.Application do
         Spi,
         LedOnOff,
         Button,
-        Potentiometer
+        Potentiometer,
+        UltrasonicSensor
       ] ++ children(target())
 
     Supervisor.start_link(children, opts)

@@ -15,8 +15,6 @@ defmodule Button do
   # SERVER
   @impl true
   def init(_) do
-    Logger.info("init Button")
-
     {:ok, input_gpio} = GPIO.open(@button_input_pin, :input)
 
     self() |> send(:subscribe_to_changes)
@@ -26,7 +24,6 @@ defmodule Button do
 
   @impl true
   def handle_info(:subscribe_to_changes, %{pin: pin} = state) do
-    Logger.info("Registering interrupts")
     GPIO.set_interrupts(pin, :both)
     {:noreply, state}
   end
@@ -36,8 +33,6 @@ defmodule Button do
 
   @impl true
   def handle_info({:circuits_gpio, _pin, _timestamp, 1}, state) do
-    Logger.info("Received 1 from button")
-
     LedOnOff.toggle(:first)
 
     {:noreply, state}

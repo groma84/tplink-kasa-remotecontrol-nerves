@@ -38,6 +38,7 @@ defmodule HelloNerves.MixProject do
       {:oled, "~> 0.3.0"},
       {:chisel, "~> 0.2.0"},
       {:power_control, "~> 0.2.0"},
+      {:nerves_hcsr04, path: "/home/martin/source/groma84@github.com/nerves_hcsr04/"},
 
       {:nerves, "~> 1.7.0", runtime: false},
       {:shoehorn, "~> 0.7.0"},

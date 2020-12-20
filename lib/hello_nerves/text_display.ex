@@ -7,8 +7,6 @@ defmodule TextDisplay do
 
   # CLIENT
   def start_link(_) do
-    Logger.info("start_link")
-
     GenServer.start_link(@me, :noargs, name: @me)
   end
 
