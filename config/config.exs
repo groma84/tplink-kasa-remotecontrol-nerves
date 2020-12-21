@@ -8,9 +8,9 @@ import Config
 # Enable the Nerves integration with Mix
 Application.start(:nerves_bootstrap)
 
-config :hello_nerves, target: Mix.target()
+config :tplink_kasa_remotecontrol, target: Mix.target()
 
-config :hello_nerves, Display,
+config :tplink_kasa_remotecontrol, Display,
   device: "i2c-1",
   driver: :ssd1306,
   type: :i2c,

@@ -4,8 +4,8 @@ defmodule UltrasonicSensor do
   require Logger
 
   @me __MODULE__
-  @trigger_pin Application.get_env(:hello_nerves, :ultrasonic_trigger_pin, 16)
-  @echo_pin Application.get_env(:hello_nerves, :ultrasonic_echo_pin, 26)
+  @trigger_pin Application.get_env(:tplink_kasa_remotecontrol, :ultrasonic_trigger_pin, 16)
+  @echo_pin Application.get_env(:tplink_kasa_remotecontrol, :ultrasonic_echo_pin, 26)
 
   # CLIENT
   def start_link(_) do

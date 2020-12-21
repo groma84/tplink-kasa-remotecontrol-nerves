@@ -6,8 +6,8 @@ defmodule UltrasonicDistance do
   alias Circuits.GPIO
 
   @me __MODULE__
-  @trigger_pin Application.get_env(:hello_nerves, :ultrasonic_trigger_pin, 18)
-  @echo_pin Application.get_env(:hello_nerves, :ultrasonic_echo_pin, 24)
+  @trigger_pin Application.get_env(:tplink_kasa_remotecontrol, :ultrasonic_trigger_pin, 18)
+  @echo_pin Application.get_env(:tplink_kasa_remotecontrol, :ultrasonic_echo_pin, 24)
 
   # CLIENT
   def start_link(_) do

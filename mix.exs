@@ -1,7 +1,7 @@
-defmodule HelloNerves.MixProject do
+defmodule TplinkKasaRemotecontrol.MixProject do
   use Mix.Project
 
-  @app :hello_nerves
+  @app :tplink_kasa_remotecontrol
   @version "0.1.0"
   @all_targets [:rpi, :rpi0, :rpi2, :rpi3, :rpi3a, :rpi4, :bbb, :osd32mp1, :x86_64]
 
@@ -22,7 +22,7 @@ defmodule HelloNerves.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {HelloNerves.Application, []},
+      mod: {TplinkKasaRemotecontrol.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

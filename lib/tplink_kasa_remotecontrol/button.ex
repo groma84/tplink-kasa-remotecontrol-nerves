@@ -5,7 +5,7 @@ defmodule Button do
 
   alias Circuits.GPIO
 
-  @button_input_pin Application.get_env(:hello_nerves, :button_input_pin, 27)
+  @button_input_pin Application.get_env(:tplink_kasa_remotecontrol, :button_input_pin, 27)
 
   # CLIENT
   def start_link(_) do

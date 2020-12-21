@@ -6,8 +6,8 @@ defmodule LedOnOff do
   alias Circuits.GPIO
 
   @me __MODULE__
-  @led_control_output_pin Application.get_env(:hello_nerves, :led_control_output_pin, 17)
-  @second_led_control_output_pin Application.get_env(:hello_nerves, :second_led_control_output_pin, 23)
+  @led_control_output_pin Application.get_env(:tplink_kasa_remotecontrol, :led_control_output_pin, 17)
+  @second_led_control_output_pin Application.get_env(:tplink_kasa_remotecontrol, :second_led_control_output_pin, 23)
 
   # CLIENT
   def start_link(_) do
