@@ -16,13 +16,6 @@ defmodule UltrasonicSensor do
   @impl true
   def init(_) do
     {:ok, pid} = UltrasonicSensorInternal.start_link({@echo_pin, @trigger_pin})
-
-    #define SUCCESS 0
-#define ERROR_INIT_GPIO -1
-#define TIMEOUT_PING -2
-#define TIMEOUT_PONG -3
-#define ERROR_GPIO_PIN -4
-
     schedule_start_signal()
 
     {:ok, %{pid: pid}}
@@ -32,7 +25,7 @@ defmodule UltrasonicSensor do
   def handle_info(:start_signal, %{pid: pid} = state) do
     :ok = UltrasonicSensorInternal.update(pid)
 
-    Process.send_after(self(), :stop_signal, 1000)
+    Process.send_after(self(), :stop_signal, 100)
 
     {:noreply, state}
   end
@@ -41,13 +34,13 @@ defmodule UltrasonicSensor do
   def handle_info(:stop_signal, %{pid: pid} = state) do
     {:ok, distance} = UltrasonicSensorInternal.info(pid)
 
-    Logger.info("Received distance '#{distance}'")
+    Logger.info("Received distance: '#{distance}'")
 
     schedule_start_signal()
     {:noreply, state}
   end
 
   defp schedule_start_signal() do
-    Process.send_after(self(), :start_signal, 1000)
+    Process.send_after(self(), :start_signal, 900)
   end
 end
